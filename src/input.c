@@ -50,15 +50,32 @@ char *word_start(char *str) {
 }
 
 char *word_end(char *str){
-  return str;
+  char *p = str;
+  *p = '\0';
+  return p;
 }
 
 int count_words(char *str) {
-  int length;
-  char *p_start;
-  char *p;
-  char *p_end;
+  int length = count_char(str);
+  char *pntr = NULL;
   int counter = 0;
+  int space;
+  int non_space;
+  for (char *p_start = str; *p_start != '\0'; p_start++) {
+    space = space_char(*p_start);
+    non_space = non_space_char(*p_start);
+    if (space == 0) {
+      // printf("Char is a space: %c\n", *p_start);
+      pntr = word_end(p_start);
+    }
+    else if (non_space == 0) {
+      // printf("Char is not a space: %c\n", *p_start);
+      pntr = word_start(p_start);
+    }
+    if (*(p_start + 1) != ' ' && *pntr == '\0'){
+      counter++;
+    }
+  }
   return counter;
 }
 

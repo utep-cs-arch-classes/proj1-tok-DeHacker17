@@ -1,48 +1,34 @@
 #include <stdio.h>
-
+#include <stdlib.h>
+#include "tokenizer.h"
 #define MAX_INPUT 100
-
-int get_input(int c, int input_arr[]);
-int space_char(char c);
-int non_space_char(char c);
+void get_input(int c, char input_arr[]);
+int count_char(char *str);
 
 void main() {
   // Variables
-  int input_arr[MAX_INPUT];
-  int input_pointer;
+  char input_arr[MAX_INPUT];
   int c;
-  // Second to ask for user input.
+  int chars = 0;
+  int words = 0;
+  // Ask for user input.
   printf("Please enter a phrase: ");
-  input_pointer = get_input(c, input_arr);
-  /*
-  for (int i = 0; i < sizeof(input_arr); i++) {
-    printf("%c" + input_arr[i]);
-  }
-  */
+  get_input(c, input_arr);
   printf("\n");
+  chars = count_char(input_arr);
+  words = count_words(input_arr);
+  printf("Number of chars: %d\n", chars);
+  printf("Number of words: %d\n", words);
 }
 
-int get_input(int c, int input_arr[]) {
-  int checker;
+void get_input(int c, char input_arr[]) {
   int pointer = 0;
-  char letter;
-  while ((c = getchar()) != '\n' && c != EOF) {
+  while ((c = getchar()) != '\n') {
+    putchar(c);
     input_arr[pointer] = c;
-    checker = space_char(input_arr[pointer]);
-    if (checker == 0) {
-      printf("Whitespace character: ");
-      putchar(c);
-      printf("\n");
-    }
-    checker = non_space_char(input_arr[pointer]);
-    if (checker == 0) {
-      printf("Non-whitespace character: ");
-      putchar(c);
-      printf("\n");
-    }
     pointer++;
   }
-  return 0;
+  input_arr[pointer] = '\0';
 }
 
 int space_char(char c) {
@@ -57,4 +43,32 @@ int non_space_char(char c) {
     return 0;
   }
   return 1;
+}
+
+char *word_start(char *str) {
+  return str;
+}
+
+char *word_end(char *str){
+  return str;
+}
+
+int count_words(char *str) {
+  int length;
+  char *p_start;
+  char *p;
+  char *p_end;
+  int counter = 0;
+  return counter;
+}
+
+int count_char(char *str) {
+  int counter = 0;
+  printf("Printing phrase with pointers: ");
+  for (char *p = str; *p != '\0'; p++) {
+    printf("%c", *p);
+    counter++;
+  }
+  printf("\n");
+  return counter;
 }

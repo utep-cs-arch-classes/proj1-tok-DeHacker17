@@ -13,17 +13,12 @@ void main() {
   // Ask for user input.
   printf("Please enter a phrase: ");
   get_input(c, input_arr);
-  printf("\n");
-  chars = count_char(input_arr);
-  words = count_words(input_arr);
-  printf("Number of chars: %d\n", chars);
-  printf("Number of words: %d\n", words);
+  count_words(input_arr);
 }
 
 void get_input(int c, char input_arr[]) {
   int pointer = 0;
   while ((c = getchar()) != '\n') {
-    putchar(c);
     input_arr[pointer] = c;
     pointer++;
   }

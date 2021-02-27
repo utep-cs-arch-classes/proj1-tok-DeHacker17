@@ -37,11 +37,9 @@ int count_words(char *str) {
     space = space_char(*p_start);
     non_space = non_space_char(*p_start);
     if (space == 0) {
-      // printf("Char is a space: %c\n", *p_start);
       pntr = word_end(p_start);
     }
     else if (non_space == 0) {
-      // printf("Char is not a space: %c\n", *p_start);
       pntr = word_start(p_start);
     }
     if (*(p_start + 1) != ' ' && *pntr == '\0' && *(p_start + 1) != '\0'){
@@ -51,6 +49,7 @@ int count_words(char *str) {
       counter++;
     }
   }
+  printf("We found %d words in the phrase\n", counter);
   return counter;
 }
 
@@ -59,5 +58,6 @@ int count_char(char *str) {
   for (char *p = str; *p != '\0'; p++) {
     counter++;
   }
+  printf("We found %d characters in the phrase\n", counter);
   return counter;
 }

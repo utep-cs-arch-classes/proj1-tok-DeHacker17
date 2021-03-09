@@ -1,7 +1,6 @@
 #include "tokenizer.h"
 #include <stdio.h>
 #include <stdlib.h>
-int count_char(char *str);
 
 int space_char(char c) {
   if (c == ' ' || c == '\t' || c == '\n' && c != '\0') {
@@ -28,7 +27,6 @@ char *word_end(char *str){
 }
 
 int count_words(char *str) {
-  int length = count_char(str);
   char *pntr = NULL;
   int counter = 0;
   int space;
@@ -53,11 +51,46 @@ int count_words(char *str) {
   return counter;
 }
 
-int count_char(char *str) {
-  int counter = 0;
-  for (char *p = str; *p != '\0'; p++) {
-    counter++;
+char *copy_str(char *inStr, short len) {
+  char *p = malloc(sizeof(char) * (len + 1));
+  int i = 0;
+  while (*inStr != '\0') {
+    p[i] = *inStr;
+    inStr++;
+    i++;
   }
-  printf("We found %d characters in the phrase\n", counter);
-  return counter;
+  return p;
+}
+
+char **tokenize(char *str) {
+  char *p_word = str;
+  int words = count_words(str);
+  char **tokens = malloc(sizeof(char) * (words + 1));
+  int traverser = 0;
+  short len = 0;
+  int jumper = 0;
+  while (traverser < words){
+    for (char *p_letter = p_word; *p_letter != '\0'; p_letter++) {
+      len++;
+      jumper++;
+    }
+    tokens[traverser] = copy_str(p_word, len);
+    p_word += jumper + 1;
+    len = 0;
+    traverser++;
+    jumper = 0;
+  }
+  return tokens;
+}
+
+void print_tokens(char **tokens) {
+  int i = 0;
+  while (tokens[i] != NULL){
+    printf("Tokens[%d] = %s\n", i, tokens[i]);
+    i++;
+  }
+}
+
+void free_tokens(char **tokens) {
+  free(tokens);
 }

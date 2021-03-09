@@ -8,12 +8,13 @@ void main() {
   // Variables
   char input_arr[MAX_INPUT];
   int c;
-  int chars = 0;
   int words = 0;
+  char **tokens;
   // Ask for user input.
   printf("Please enter a phrase: ");
   get_input(c, input_arr);
-  count_words(input_arr);
+  tokens = tokenize(input_arr);
+  print_tokens(tokens);
 }
 
 void get_input(int c, char input_arr[]) {

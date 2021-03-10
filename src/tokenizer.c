@@ -17,34 +17,43 @@ int non_space_char(char c) {
 }
 
 char *word_start(char *str) {
-  return str;
+  char *p = str;
+  int x = non_space_char(*p);
+  while (x == 0 && *p != '\0') {
+    x = non_space_char(*p);
+    if (x == 1) {
+      break;
+    }
+    p++;
+  }
+  return p;
 }
 
 char *word_end(char *str){
   char *p = str;
-  *p = '\0';
+  int x = space_char(*p);
+  while (x == 0 && *p != '\0') {
+    x = space_char(*p);
+    if (x == 1) {
+      break;
+    }
+    p++;
+  }
   return p;
 }
 
 int count_words(char *str) {
-  char *pntr = NULL;
   int counter = 0;
-  int space;
-  int non_space;
-  for (char *p_start = str; *p_start != '\0'; p_start++) {
-    space = space_char(*p_start);
-    non_space = non_space_char(*p_start);
-    if (space == 0) {
-      pntr = word_end(p_start);
+  for (char *p = str; *p != '\0' || p == NULL; p++) {
+    if (*p == ' ' && *p != '\0'){
+      p = word_end(p);
     }
-    else if (non_space == 0) {
-      pntr = word_start(p_start);
-    }
-    if (*(p_start + 1) != ' ' && *pntr == '\0' && *(p_start + 1) != '\0'){
+    if (*p != ' ' && *p != '\0') {
+      p = word_start(p);
       counter++;
     }
-    else if(*(p_start + 1) == '\0' && *p_start != '\0'){
-      counter++;
+    if (p == NULL || *p == '\0'){
+      break;
     }
   }
   printf("We found %d words in the phrase\n", counter);
@@ -54,10 +63,13 @@ int count_words(char *str) {
 char *copy_str(char *inStr, short len) {
   char *p = malloc(sizeof(char) * (len + 1));
   int i = 0;
-  while (*inStr != '\0') {
+  while (*inStr != '\0' && i < len) {
     p[i] = *inStr;
     inStr++;
     i++;
+  }
+  if (*inStr == '\0' && len == 1){
+    p[i] = *inStr;
   }
   return p;
 }
@@ -65,21 +77,25 @@ char *copy_str(char *inStr, short len) {
 char **tokenize(char *str) {
   char *p_word = str;
   int words = count_words(str);
-  char **tokens = malloc(sizeof(char) * (words + 1));
+  char **tokens = (char **) malloc(sizeof(char *) * (words + 1));
   int traverser = 0;
   short len = 0;
-  int jumper = 0;
-  while (traverser < words){
-    for (char *p_letter = p_word; *p_letter != '\0'; p_letter++) {
+  int spaces = 0;
+  while (traverser <= words && *p_word != '\0'){
+    for (char *p = p_word; *p != '\0' && *p != ' '; p++) {
       len++;
-      jumper++;
     }
     tokens[traverser] = copy_str(p_word, len);
-    p_word += jumper + 1;
+    p_word += len;
+    for (char *p = p_word; *p != '\0' && *p ==' '; p++) {
+      spaces++;
+    }
+    p_word += spaces;
     len = 0;
+    spaces = 0;
     traverser++;
-    jumper = 0;
   }
+  tokens[traverser + 1] = copy_str(p_word, 0);
   return tokens;
 }
 
@@ -92,5 +108,12 @@ void print_tokens(char **tokens) {
 }
 
 void free_tokens(char **tokens) {
+  int i = 0;
+  while (tokens[i] != NULL) {
+    printf("Freeing Token[%d]\n", i);
+    free(tokens[i]);
+    i++;
+  }
   free(tokens);
+  tokens = NULL;
 }

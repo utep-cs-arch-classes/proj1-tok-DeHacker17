@@ -44,7 +44,7 @@ char *word_end(char *str){
 
 int count_words(char *str) {
   int counter = 0;
-  for (char *p = str; *p != '\0' || p == NULL; p++) {
+  for (char *p = str; *p != '\0'; p++) {
     if (*p == ' ' && *p != '\0'){
       p = word_end(p);
     }
@@ -108,12 +108,6 @@ void print_tokens(char **tokens) {
 }
 
 void free_tokens(char **tokens) {
-  int i = 0;
-  while (tokens[i] != NULL) {
-    printf("Freeing Token[%d]\n", i);
-    free(tokens[i]);
-    i++;
-  }
   free(tokens);
   tokens = NULL;
 }
